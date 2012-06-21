@@ -1,0 +1,27 @@
+.waytaglink, .waytag_selected{ text-decoration: none;}
+.waytaglink:link {color:#33A;}      /* unvisited link */
+.waytaglink:visited {color:#33A;}  /* visited link */
+.waytaglink:hover, .waytag_selected:hover {color:#C00;}  /* mouse over link */
+.waytaglink:active {color:#33A;}  /* selected link */
+
+.waytag_selected:link {color:#3A3;}      /* unvisited link */
+.waytag_selected:visited {color:#3A3;}  /* visited link */
+.waytag_selected:active {color:#3A3;}  /* selected link */
+
+.waytaglink, .waytag_selected
+{
+	color:#CCC;
+	transition:color 1s;
+	-moz-transition: color 1s; /* Firefox 4 */
+	-webkit-transition: color 1s; /* Safari and Chrome */
+	-o-transition: color 1s; /* Opera */
+}
+.waytagsummary
+{
+	border: none;
+}
+
+.waytagsummary_selected
+{
+	border: 2px dotted #3A3;
+}
