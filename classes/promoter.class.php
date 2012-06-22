@@ -7,31 +7,24 @@ class Promoter
 	private $id, $waytag_id, $last_name, $first_name, $optional_status;
 
 	/**
-	 * @param unknown_type $id
-	 * @param unknown_type $waytag_id
-	 * @param unknown_type $last_name
-	 * @param unknown_type $first_name
+	 * @param integer $id
+	 * @param string $waytag_id
+	 * @param string $last_name
+	 * @param string $first_name
+	 * @param string $optional_status
 	 */
-	private function __construct($id, $waytag_id, $last_name, $first_name, $optional_status)
+	private function __construct($id = "", $waytag_id = "", $last_name = "", $first_name = "", $optional_status = "")
 	{
-		$this->id = $id;
-		$this->waytag_id = $waytag_id;
-		$this->last_name = $last_name;
-		$this->first_name = $first_name;
-		$this->optional_status = $optional_status;
-	}
-
-	/**
-	 * @param unknown_type $promoterId
-	 * @return Promoter
-	 */
-	public static function find($promoterId)
-	{
-		$attributes = Promoter::getPromoter($promoterId);
-		if (!$attributes)
-			return null;
-		$promoter = new Promoter($attributes["ID"], $attributes["waytag_ID"], $attributes["last_name"], $attributes["first_name"], $attributes["optional_status"]);
-		return $promoter;
+		// Check if the class fields have not been loaded already, 
+		// this is the case with for example MYSQLi fetch_object
+		if (!$this->id)
+		{
+			$this->id = $id;
+			$this->waytag_id = $waytag_id;
+			$this->last_name = $last_name;
+			$this->first_name = $first_name;
+			$this->optional_status = $optional_status;
+		}
 	}
 
 	/**
@@ -59,22 +52,22 @@ class Promoter
 	public static function getPromoterByWaytagID($wayTagID)
 	{
 		$con = Database::connect();
-		$result = $con->query("SELECT * FROM Promoters WHERE waytag_ID LIKE '" . $con->real_escape_string($wayTagID) . "'");
+		$query = "SELECT *, ID as id, waytag_ID as waytag_id FROM Promoters WHERE waytag_ID LIKE '" . $con->real_escape_string($wayTagID) . "'";
+		$result = $con->query($query);
 		$promoter = null;
 		if($result && $result->num_rows > 0)
 		{
-			$attributes = $result->fetch_array();
-			$promoter = new Promoter($attributes["ID"], $attributes["waytag_ID"], $attributes["last_name"], $attributes["first_name"], $attributes["optional_status"]);
+			$promoter = $result->fetch_object(__CLASS__);
 		}
 		$con->close();
 		return $promoter;
 	}
-	
+
 	public function getId()
 	{
 		return $this->id;
 	}
-	
+
 	public function getWaytagId()
 	{
 		return $this->waytag_id;
@@ -84,17 +77,17 @@ class Promoter
 	{
 		return $this->last_name;
 	}
-	
+
 	public function getFirstname()
 	{
 		return $this->first_name;
 	}
-	
+
 	public function getOptionalStatus()
 	{
 		return $this->optional_status;
 	}
-	
+
 	/**
 	 * @return array
 	 */
@@ -147,16 +140,16 @@ class Promoter
 	 * @param array $promoter_id
 	 * @return boolean
 	 */
-	private static function getPromoter($promoter_id)
+	public static function getPromoter($promoter_id)
 	{
 		if (!is_numeric($promoter_id))
 			return null;
 		$con = Database::connect();
-		$result = $con->query("SELECT * FROM Promoters WHERE ID = $promoter_id");
-		$return_result = array();
+		$result = $con->query("SELECT *, ID as id, waytag_ID as waytag_id FROM Promoters WHERE ID = $promoter_id");
+		$return_result = null;
 		if($result && $result->num_rows > 0)
 		{
-			$return_result = $result->fetch_array();
+			$return_result = $result->fetch_object(__CLASS__);
 		}
 		$con->close();
 		return $return_result;

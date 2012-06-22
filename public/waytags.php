@@ -11,7 +11,7 @@ switch ($function)
 		$activity_id = $_POST["activity_id"];
 		if (is_numeric($promoter_id) && is_numeric($activity_id))
 		{
-			$promoter = Promoter::find($promoter_id);
+			$promoter = Promoter::getPromoter($promoter_id);
 			$result = $promoter->addActivity($activity_id);
 		}
 		break;
@@ -21,7 +21,7 @@ switch ($function)
 		$activity_id = $_POST["activity_id"];
 		if (is_numeric($promoter_id) && is_numeric($activity_id))
 		{
-			$promoter = Promoter::find($promoter_id);
+			$promoter = Promoter::getPromoter($promoter_id);
 			$result = $promoter->removeActivity($activity_id);
 		}
 		echo $result;
