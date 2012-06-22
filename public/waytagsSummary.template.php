@@ -10,7 +10,10 @@ require_once("../classes/activity.class.php");
 	foreach ($wayTags as $wayTag)
 	{
 		$promoter = Promoter::getPromoterByWaytagID($wayTag["dWayTagObj"]);
-		include("wayTagSummary.template.php");
+		if ($config["show_all_waytags"] || $promoter)
+		{
+			include("wayTagSummary.template.php");
+		}
 	}
 	?>
 	</div>

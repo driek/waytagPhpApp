@@ -7,4 +7,5 @@ $config["waytag_user_name"] = "waytag user name";
 $config["waytag_user_password"] = "waytag user password";
 $config["waytag_app_key"] = 0; //Waytag application ID
 $config["waytag_app_password"] = "Waytag application password";
+$config["show_all_waytags"] = false; //show all waytags or only those with promoters 
 ?>

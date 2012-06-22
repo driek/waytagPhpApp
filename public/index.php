@@ -2,6 +2,7 @@
 require_once("../classes/promoter.class.php");
 require_once("../classes/waytag.class.php");
 require_once("../classes/activity.class.php");
+include("../config/config.inc.php");
 ?>
 <html>
 <head>
@@ -46,7 +47,11 @@ var wayTag, marker;
 <?php 
 foreach ($wayTags as $key => $wayTag)
 {
-	$key = str_replace(".", "", $key);
+	$promoter = Promoter::getPromoterByWaytagID($wayTag["dWayTagObj"]);
+	if (!$config["show_all_waytags"] && !$promoter)
+	{
+		continue;
+	}
 ?>
 wayTag = new Array();
 wayTag["displayName"] = "<?= $wayTag["cDisplayName"]?>";

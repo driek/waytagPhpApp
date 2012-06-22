@@ -7,13 +7,13 @@ class Promoter
 	private $id, $waytag_id, $last_name, $first_name, $optional_status;
 
 	/**
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $waytag_id
 	 * @param string $last_name
 	 * @param string $first_name
 	 * @param string $optional_status
 	 */
-	private function __construct($id = "", $waytag_id = "", $last_name = "", $first_name = "", $optional_status = "")
+	private function __construct($id = 0, $waytag_id = "", $last_name = "", $first_name = "", $optional_status = "")
 	{
 		// Check if the class fields have not been loaded already, 
 		// this is the case with for example MYSQLi fetch_object
@@ -63,26 +63,41 @@ class Promoter
 		return $promoter;
 	}
 
+	/**
+	 * @return number
+	 */
 	public function getId()
 	{
 		return $this->id;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getWaytagId()
 	{
 		return $this->waytag_id;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getLastname()
 	{
 		return $this->last_name;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getFirstname()
 	{
 		return $this->first_name;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getOptionalStatus()
 	{
 		return $this->optional_status;
@@ -105,7 +120,7 @@ class Promoter
 	}
 
 	/**
-	 * @return multitype:unknown
+	 * @return array
 	 */
 	public static function getPromotersWithoutActivities()
 	{
@@ -121,7 +136,7 @@ class Promoter
 	}
 
 	/**
-	 * @return multitype:unknown
+	 * @return array
 	 */
 	public static function getPromotersWithoutWayTag()
 	{
@@ -137,8 +152,8 @@ class Promoter
 	}
 
 	/**
-	 * @param array $promoter_id
-	 * @return boolean
+	 * @param int $promoter_id
+	 * @return Promoter
 	 */
 	public static function getPromoter($promoter_id)
 	{
