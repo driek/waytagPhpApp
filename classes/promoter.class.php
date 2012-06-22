@@ -4,7 +4,7 @@ require_once 'database.class.php';
 
 class Promoter
 {
-	private $id, $waytag_id, $last_name, $first_name;
+	private $id, $waytag_id, $last_name, $first_name, $optional_status;
 
 	/**
 	 * @param unknown_type $id
@@ -12,12 +12,13 @@ class Promoter
 	 * @param unknown_type $last_name
 	 * @param unknown_type $first_name
 	 */
-	private function __construct($id, $waytag_id, $last_name, $first_name)
+	private function __construct($id, $waytag_id, $last_name, $first_name, $optional_status)
 	{
 		$this->id = $id;
 		$this->waytag_id = $waytag_id;
 		$this->last_name = $last_name;
 		$this->first_name = $first_name;
+		$this->optional_status = $optional_status;
 	}
 
 	/**
@@ -29,7 +30,7 @@ class Promoter
 		$attributes = Promoter::getPromoter($promoterId);
 		if (!$attributes)
 			return null;
-		$promoter = new Promoter($attributes["ID"], $attributes["waytag_ID"], $attributes["last_name"], $attributes["last_name"]);
+		$promoter = new Promoter($attributes["ID"], $attributes["waytag_ID"], $attributes["last_name"], $attributes["first_name"], $attributes["optional_status"]);
 		return $promoter;
 	}
 
@@ -37,17 +38,15 @@ class Promoter
 	 * @param integer $promoter_ID
 	 * @return array
 	 */
-	public static function getActivities($promoter_ID)
+	public function getActivities()
 	{
 		$con = Database::connect();
 		$return_result = array();
-		if (is_numeric($promoter_ID))
+		$query = "SELECT Activities.* FROM Activities JOIN Activities_Promoters ON Activities_Promoters.Activity_ID = Activities.ID WHERE Activities_Promoters.Promoter_ID = " . $this->id ;
+		$result = $con->query($query);
+		while($result && $row = $result->fetch_array())
 		{
-			$result = $con->query("SELECT Activities.* FROM Activities JOIN Activities_Promoters ON Activities_Promoters.Activity_ID = Activities.ID WHERE Activities_Promoters.Promoter_ID = " . $promoter_ID );
-			while($result && $row = $result->fetch_array())
-			{
-				$return_result[] = $row;
-			}
+			$return_result[] = $row;
 		}
 		$con->close();
 		return $return_result;
@@ -61,15 +60,41 @@ class Promoter
 	{
 		$con = Database::connect();
 		$result = $con->query("SELECT * FROM Promoters WHERE waytag_ID LIKE '" . $con->real_escape_string($wayTagID) . "'");
-		$return_result = false;
+		$promoter = null;
 		if($result && $result->num_rows > 0)
 		{
-			$return_result = $result->fetch_array();
+			$attributes = $result->fetch_array();
+			$promoter = new Promoter($attributes["ID"], $attributes["waytag_ID"], $attributes["last_name"], $attributes["first_name"], $attributes["optional_status"]);
 		}
 		$con->close();
-		return $return_result;
+		return $promoter;
+	}
+	
+	public function getId()
+	{
+		return $this->id;
+	}
+	
+	public function getWaytagId()
+	{
+		return $this->waytag_id;
 	}
 
+	public function getLastname()
+	{
+		return $this->last_name;
+	}
+	
+	public function getFirstname()
+	{
+		return $this->first_name;
+	}
+	
+	public function getOptionalStatus()
+	{
+		return $this->optional_status;
+	}
+	
 	/**
 	 * @return array
 	 */
@@ -119,13 +144,13 @@ class Promoter
 	}
 
 	/**
-	 * @param unknown_type $promoter_id
+	 * @param array $promoter_id
 	 * @return boolean
 	 */
-	public static function getPromoter($promoter_id)
+	private static function getPromoter($promoter_id)
 	{
 		if (!is_numeric($promoter_id))
-			return false;
+			return null;
 		$con = Database::connect();
 		$result = $con->query("SELECT * FROM Promoters WHERE ID = $promoter_id");
 		$return_result = array();

@@ -38,7 +38,7 @@ while ($xml->read()) {
 }
  
 $promoter = Promoter::getPromoterByWaytagID($wayTagID);
-$activities = Promoter::getActivities($promoter["ID"]);
+$activities = $promoter?$promoter->getActivities():array();
 include("wayTagInfo.template.php");
 ?>
 

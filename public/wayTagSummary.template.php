@@ -2,8 +2,8 @@
 	<a class="waytaglink" id="waytaglink_<?=$wayTag["dWayTagObj"]?>" href="#" onclick="panMapToWayTag('<?=$wayTag["dWayTagObj"]?>'); showExtraInfo('<?=$wayTag["dWayTagObj"]?>');"><img src="images/locate.png" alt="Pan to location" title="Pan to location" style="position: relative; top:4px;" /><?=$wayTag["cCustomReference"]?></a><br />
 	<?php if ($promoter) 
 	{
-		echo ($promoter["last_name"] . ", " . $promoter["first_name"]);
-		$status = $promoter["optional_status"];
+		echo ($promoter->getLastname() . ", " . $promoter->getFirstname());
+		$status = $promoter->getOptionalStatus();
 		$max_len = 40;
 		if (strlen($status) > $max_len)
 		{

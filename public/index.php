@@ -173,6 +173,7 @@ function removeActivityFromPromoter(promoter_id, activity_id, tableRow)
 		//document.getElementById("debug").innerHTML = xmlhttp.responseText;
 		if (this.responseText)
 		{
+			//document.getElementById("debug").innerHTML = this.responseText;
 			tableRow.parentNode.removeChild(tableRow);
 			refreshWaytagsSummary();
 		}

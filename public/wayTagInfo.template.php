@@ -4,14 +4,14 @@
 if($promoter)
 {
 	?>
-	<tr><th>Last name</th><td><?=$promoter["last_name"]?></td></tr>
-	<tr><th>First name</th><td><?=$promoter["first_name"]?></td></tr>
-	<tr><th>Status message</th><td><?=$promoter["optional_status"]?></td></tr>
+	<tr><th>Last name</th><td><?=$promoter->getLastname()?></td></tr>
+	<tr><th>First name</th><td><?=$promoter->getFirstname()?></td></tr>
+	<tr><th>Status message</th><td><?=$promoter->getOptionalStatus()?></td></tr>
 	<?php
 }
 foreach ($activities as $activity)
 {?>
-	<tr><th>Activity name</th><td><?=$activity["name"]?> <a href="#" onclick="removeActivityFromPromoter(<?=$promoter["ID"]?>, <?=$activity["ID"]?>, this.parentNode.parentNode);"><img src="images/delete.png" style="position: relative; top:4px;" alt="remove activity from promoter" title="remove activity from promoter" /></a></td></tr>
+	<tr><th>Activity name</th><td><?=$activity["name"]?> <a href="#" onclick="removeActivityFromPromoter(<?=$promoter->getId()?>, <?=$activity["ID"]?>, this.parentNode.parentNode);"><img src="images/delete.png" style="position: relative; top:4px;" alt="remove activity from promoter" title="remove activity from promoter" /></a></td></tr>
 <?php 
 }
 ?>
